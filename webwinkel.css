@@ -1,0 +1,99 @@
+.card-title {
+    font-size: 30px;
+    font-family: 'Satisfy', cursive;
+}
+
+.card-text {
+    font-size: 15px;
+    font-family: 'Domine', serif;
+}
+
+.card-price {
+    font-size: 15px;
+    font-family: 'Domine', serif;
+}
+
+.card-img-top {
+    height: 440px;
+    width: 315px;
+    box-shadow: 10px 10px 5px #888888;
+}
+
+#knoppen {
+    height: 78.4px;
+    width: 318px;
+    background-color: whitesmoke;
+}
+
+.card-footer {
+    background-color: white;
+    border-top: none;
+}
+
+.btn {
+    font-family: 'Domine', serif;
+    color: white !important;
+}
+
+.card {
+    border: none;
+    margin-right: 20px;
+    margin-top: 50px;
+    background-color: whitesmoke;
+}
+
+h1 {
+    font-size: 40px;
+    margin-top: 50px;
+    margin-bottom: 10px;
+    font-family: 'Rock Salt', cursive;
+    color: rgb(177, 0, 0);
+}
+
+body {
+    background-color: whitesmoke;
+}
+
+.modal-dialog {
+    background-color: whitesmoke;
+}
+
+.modal-footer .btn {
+    border: none;
+}
+
+.modal-title {
+    font-family: 'Rock Salt', cursive;
+    font-size: 30px;
+    color: rgb(177, 0, 0);
+}
+
+.modal-header {
+    border: none;
+}
+
+.modal-body {
+    border: none;
+    font-family: 'Domine', serif;
+    font-size: 20px;
+}
+
+.modal-footer {
+    border: none;
+}
+
+#detail-img {
+    height: 350px;
+    width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 10px 10px 5px #888888;
+}
+
+#omschrijving {
+    margin-top: 30px;
+}
+
+#informatie {
+    font-size: 15px;
+}
