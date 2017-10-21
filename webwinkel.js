@@ -135,47 +135,93 @@ $(document).ready(function() {
             $("#myModal").remove();
         });
         $("#btn-check").click(function() {
-            $('#myModal').on('hidden.bs.modal', function (e) {
-                console.log("what's it?");
-                var checkout = `
-                <div class="modal" id="checkpop" data-backdrop="static" data-keyboard="false">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
+            var checkout = `
+            <div class="modal" id="checkpop" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
                             <h5 class="modal-title">The Anarchist Bookstore</h5>
-                            </div>
-                            <div id="checkoutbody" class="modal-body">
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" id="btn-checkok" data-dismiss="modal">OK</button>
-                            </div>
+                        </div>
+                        <div id="checkoutbody" class="modal-body">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" id="btn-checkok" data-dismiss="modal">OK</button>
                         </div>
                     </div>
+                </div>
+            </div>`
+            $("#checkout").append(checkout);
+            $.each(basket, function(i, element) {
+                var checkbody = `
+                <div class="row mt-1" id=${i}>
+                    <div class="col-md-3 merknaam">
+                        <span>${element.merknaam}</span>
+                    </div>
+                    <div class="col-md-3 omschrijving">
+                        <span>${element.omschrijving}</span>
+                    </div>
+                    <div class="col-md-2 prijs">
+                        <span>${element.prijs} EUR;</span>
+                    </div>
+                    <div class="col-md-2 aantal">
+                        <span>aantal: ${element.aantal}</span>
+                    </div>
+                    <div class="button col-md-2">
+                        <button id=${i} type="button" class="btn btn-danger btn-minus">-</button>
                 </div>`
-                $("#checkout").append(checkout);
-                $.each(basket, function(i, element) {
-                    var checkbody = `
-                    <div class="row" id:"${i}">
-                        <div id="merknaam">
-                            <span>${element.merknaam}</span>
-                        </div>
-                        <div id="omschrijving">
-                            <span>${element.omschrijving}</span>
-                        </div>
-                        <div id="prijs">
-                            <span>${element.prijs}</span>
-                        </div>
-                        <div id="aantal">
-                        <span>${element.aantal}</span>
-                        </div>
-                    </div>`
-                    $("#checkoutbody").append(checkbody);
-                });
-                $("#checkpop").modal("show");
-                $("#btn-checkok").click(function(){
+                console.log(i);
+                $("#checkoutbody").append(checkbody);
+            });
+            $("#checkpop").modal("show");
+            $("#myModal").modal("toggle");
+            $("#myModal").remove();
+            $(".btn-minus").click(function() {
+                console.log("index artikelen: " + e);
+                var item = new Artikel(artikelen[e].merknaam, artikelen[e].omschrijving, artikelen[e].afbeelding, artikelen[e].prijs, artikelen[e].informatie, artikelen[e].aantal);
+                console.log(artikel.merknaam);
+                //var index = basket.findIndex(element => element.merknaam === item.merknaam);
+                var index = event.target.id;
+                console.log("index in basket: " + index);
+                if (basket.length == 0) {
+                    console.log("lengte na verwijderen: " + basket.length);
                     $("#checkpop").modal("toggle");
                     $("#checkpop").remove();
-                });
+                } else {
+                    if (basket[index].aantal > 0) {
+                        basket[index].aantal -=1;
+                    } 
+                    if (basket[index].aantal == 0) {
+                        basket.splice(index, index + 1);
+                        console.log("if == 0; de lengte van de array basket: " + basket.length);
+                    }
+                    $("#checkoutbody").empty();
+                    console.log("else: " + basket.length);
+                    $.each(basket, function(i, element) {
+                        console.log(element);
+                        var renewbody = `
+                        <div class="row mt-1" id=${i}>
+                            <div class="col-md-3 merknaam">
+                                <span>${element.merknaam}</span>
+                            </div>
+                            <div class="col-md-3 omschrijving">
+                                <span>${element.omschrijving}</span>
+                            </div>
+                            <div class="col-md-2 prijs">
+                                <span>${element.prijs} EUR;</span>
+                            </div>
+                            <div class="col-md-2 aantal">
+                                <span>aantal: ${element.aantal}</span>
+                            </div>
+                            <div class="button col-md-2">
+                                <button id=${i} type="button" class="btn btn-danger btn-minus">-</button>
+                        </div>`
+                        $("#checkoutbody").append(renewbody);
+                    });
+                }
+            });
+            $("#btn-checkok").click(function(){
+                $("#checkpop").modal("toggle");
+                $("#checkpop").remove();
             });
         });
     });

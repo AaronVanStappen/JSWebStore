@@ -97,3 +97,20 @@ body {
 #informatie {
     font-size: 15px;
 }
+
+.merknaam {
+    font-size: 20px;
+    font-family: 'Satisfy', cursive;
+}
+
+.omschrijving {
+    font-size: 16px;
+}
+
+.prijs {
+    font-size: 16px;
+}
+
+.aantal {
+    font-size: 16px;
+}
