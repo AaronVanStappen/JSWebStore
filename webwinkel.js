@@ -7,7 +7,7 @@ function Artikel (merknaam, omschrijving, afbeelding, prijs, informatie, aantal)
     this.aantal = aantal;
 }
 
-var artikelen = new Array();
+var artikelen = [];
 artikelen[0] = new Artikel("To Kill a Mockingbird", "A novel by Harper Lee", "img/afb1.jpg", 15.95, "The unforgettable novel of a childhood in a" +
 " sleepy Southern town and the crisis of conscience that rocked it," + 
 " To Kill A Mockingbird became both an instant bestseller and a critical success when it was first published in 1960" +
@@ -36,7 +36,7 @@ artikelen[4] = new Artikel("Under the Net", "A philosophical novel by Iris Murdo
 artikelen[5] = new Artikel("The Stranger", "A philosophical novel by Albert Camus", "img/afb6.jpg", 14.85, "Through the story of an ordinary man unwittingly drawn into a senseless murder on an Algerian beach, Camus explored what he termed" +
 " 'the nakedness of man faced with the absurd'. First published in English in 1946. Now in a new translation by Matthew Ward.", 1);
 
-var basket = new Array();
+var basket = [];
 
 $(document).ready(function() {
     $.each(artikelen, function(i, artikel) {
@@ -55,8 +55,8 @@ $(document).ready(function() {
                 </div>
             </div>
             <div id="knoppen" class="card-footer">
-                <a id="${i}" class="btn btn-danger btn-detail">detail</a>
-                <a id="${i}" class="btn btn-danger btn-order">order</a>
+                <a id="${i}" class="btn btn-danger btn-detail" data-dismiss="modal">detail</a>
+                <a id="${i}" class="btn btn-danger btn-order" data-dismiss="modal">order</a>
             </div>
         </div>`
         $("#row").append(card);
@@ -90,16 +90,16 @@ $(document).ready(function() {
         $("#detailpop").append(detail);
         $("#detailModal").modal("show");
         $(".btn-resume").click(function(){
-            $("#detailModal").modal("toggle");
-            $("#detailModal").remove();
+            //$("#detailModal").modal("toggle");
+            //$("#detailModal").remove();
             console.log("lukt dit?");
         });
     });
-    $(".btn-order").click(function(e){
+    $(".btn-order").click(function(){
         var e = event.target.id;
         //merknaam, omschrijving, afbeelding, prijs, informatie, aantal
         var artikel = new Artikel(artikelen[e].merknaam, artikelen[e].omschrijving, artikelen[e].afbeelding, artikelen[e].prijs, artikelen[e].informatie, artikelen[e].aantal);
-        console.log(artikel.merknaam);
+        console.log("ordered: " + artikel.merknaam);
         var index = basket.findIndex(element => element.merknaam === artikel.merknaam);
         console.log("index in basket: " + index);
         if (index != -1) {
@@ -107,9 +107,9 @@ $(document).ready(function() {
         } else {
             basket.push(artikel);
         }
-        for (i of basket) {
+        /* for (let i of basket) {
             console.log(i.merknaam + " amount: " + i.aantal);
-        }
+        } */
         console.log(basket);
         var modal = `
         <div class="modal" id="myModal" data-backdrop="static" data-keyboard="false">
@@ -122,8 +122,8 @@ $(document).ready(function() {
                         <p>Thanks for ordering.</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger btn-shop">keep shopping</button>
-                        <button type="button" class="btn btn-danger" id="btn-check" data-dismiss="modal">checkout</button>
+                        <button type="button" class="btn btn-danger btn-shop" data-dismiss="modal">keep shopping</button>
+                        <button type="button" class="btn btn-danger btn-check" data-dismiss="modal">checkout</button>
                     </div>
                 </div>
             </div>
@@ -131,10 +131,10 @@ $(document).ready(function() {
         $("#pop-up").append(modal);
         $("#myModal").modal("show");
         $(".btn-shop").click(function(){
-            $("#myModal").modal("toggle");
-            $("#myModal").remove();
+            //$("#myModal").modal("toggle");
+            //$("#myModal").remove();
         });
-        $("#btn-check").click(function() {
+        $(".btn-check").click(function() {
             var checkout = `
             <div class="modal" id="checkpop" data-backdrop="static" data-keyboard="false">
                 <div class="modal-dialog modal-lg" role="document">
@@ -151,9 +151,12 @@ $(document).ready(function() {
                 </div>
             </div>`
             $("#checkout").append(checkout);
-            $.each(basket, function(i, element) {
+            var d = 0;
+            $.each(basket, function(j, element) {
+                d++;
+                console.log("iteration over basket: " + d);
                 var checkbody = `
-                <div class="row mt-1" id=${i}>
+                <div class="row mt-1" id="${j}">
                     <div class="col-md-3 merknaam">
                         <span>${element.merknaam}</span>
                     </div>
@@ -167,61 +170,61 @@ $(document).ready(function() {
                         <span>aantal: ${element.aantal}</span>
                     </div>
                     <div class="button col-md-2">
-                        <button id=${i} type="button" class="btn btn-danger btn-minus">-</button>
+                        <button id="${j}" type="button" class="btn btn-danger btn-minus">-</button>
                 </div>`
-                console.log(i);
+                console.log("index in basket: " + j);
+                console.log("element in basket: " + element.merknaam);
                 $("#checkoutbody").append(checkbody);
             });
+            console.log(basket.length);
+            //$("#myModal").modal("toggle");
+            //$("#myModal").remove();
             $("#checkpop").modal("show");
-            $("#myModal").modal("toggle");
-            $("#myModal").remove();
             $(".btn-minus").click(function() {
-                console.log("index artikelen: " + e);
+                console.log("is dit de juiste index: " + e);
                 var item = new Artikel(artikelen[e].merknaam, artikelen[e].omschrijving, artikelen[e].afbeelding, artikelen[e].prijs, artikelen[e].informatie, artikelen[e].aantal);
                 console.log(artikel.merknaam);
                 //var index = basket.findIndex(element => element.merknaam === item.merknaam);
                 var index = event.target.id;
                 console.log("index in basket: " + index);
+                if (basket[index].aantal > 0) {
+                    basket[index].aantal -=1;
+                }
+                if (basket[index].aantal == 0) {
+                    basket.splice(index, 1);
+                }
                 if (basket.length == 0) {
                     console.log("lengte na verwijderen: " + basket.length);
                     $("#checkpop").modal("toggle");
                     $("#checkpop").remove();
-                } else {
-                    if (basket[index].aantal > 0) {
-                        basket[index].aantal -=1;
-                    } 
-                    if (basket[index].aantal == 0) {
-                        basket.splice(index, index + 1);
-                        console.log("if == 0; de lengte van de array basket: " + basket.length);
-                    }
-                    $("#checkoutbody").empty();
-                    console.log("else: " + basket.length);
-                    $.each(basket, function(i, element) {
-                        console.log(element);
-                        var renewbody = `
-                        <div class="row mt-1" id=${i}>
-                            <div class="col-md-3 merknaam">
-                                <span>${element.merknaam}</span>
-                            </div>
-                            <div class="col-md-3 omschrijving">
-                                <span>${element.omschrijving}</span>
-                            </div>
-                            <div class="col-md-2 prijs">
-                                <span>${element.prijs} EUR;</span>
-                            </div>
-                            <div class="col-md-2 aantal">
-                                <span>aantal: ${element.aantal}</span>
-                            </div>
-                            <div class="button col-md-2">
-                                <button id=${i} type="button" class="btn btn-danger btn-minus">-</button>
-                        </div>`
-                        $("#checkoutbody").append(renewbody);
-                    });
                 }
+                $("#checkoutbody").empty();
+                $.each(basket, function(i, element) {
+                    console.log(basket.length);
+                    var renewbody = `
+                    <div class="row mt-1" id="${i}">
+                        <div class="col-md-3 merknaam">
+                            <span>${element.merknaam}</span>
+                        </div>
+                        <div class="col-md-3 omschrijving">
+                            <span>${element.omschrijving}</span>
+                        </div>
+                        <div class="col-md-2 prijs">
+                            <span>${element.prijs} EUR;</span>
+                        </div>
+                        <div class="col-md-2 aantal">
+                            <span>aantal: ${element.aantal}</span>
+                        </div>
+                        <div class="button col-md-2">
+                            <button id="${i}" type="button" class="btn btn-danger btn-minus">-</button>
+                    </div>`
+                    $("#checkoutbody").append(renewbody);
+                    console.log("nieuw aantal: " + element.aantal);
+                });
             });
             $("#btn-checkok").click(function(){
-                $("#checkpop").modal("toggle");
-                $("#checkpop").remove();
+                //$("#checkpop").modal("toggle");
+                //$("#checkpop").remove();
             });
         });
     });
