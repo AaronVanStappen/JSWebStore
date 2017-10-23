@@ -167,7 +167,7 @@ $(document).ready(function() {
                         <span>${element.prijs} EUR;</span>
                     </div>
                     <div class="col-md-2 aantal">
-                        <span>aantal: ${element.aantal}</span>
+                        <span>aantal : ${element.aantal}</span>
                     </div>
                     <div class="button col-md-2">
                         <button id="${j}" type="button" class="btn btn-danger btn-minus">-</button>
